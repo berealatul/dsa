@@ -41,3 +41,33 @@ void Graph::bfs(const vector<vector<int>> &adjList, vector<bool> &visited, const
         }
     }
 }
+
+bool Graph::validPath(int n, vector<vector<int>> &edges, int source, int destination)
+{
+    // converting edge list of a graph to adjacency list
+    vector<vector<int>> adjList(n);
+    for (auto edge : edges)
+    {
+        adjList[edge[0]].push_back(edge[1]);
+        adjList[edge[1]].push_back(edge[0]);
+    }
+
+    vector<bool> visited(n, false);
+    return dfsMode(adjList, visited, source, destination);
+}
+
+bool dfsMode(const vector<vector<int>> &adjList, vector<bool> &visited, int source, int destination)
+{
+    if (source == destination)
+        return true;
+    visited[source] = true;
+
+    for (auto neighbour : adjList[source])
+    {
+        if (!visited[neighbour] && dfsMode(adjList, visited, neighbour, destination))
+        {
+            return true;
+        }
+    }
+    return false;
+}
