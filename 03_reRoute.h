@@ -20,7 +20,12 @@ public:
         }
 
         int targetCity = 0;
-        return bfsMode(forwardList, backwardList, targetCity);
+        // return bfsMode(forwardList, backwardList, targetCity);
+
+        int routeChanged = 0;
+        vector<bool> visited(n, false);
+        dfsMode(forwardList, backwardList, visited, targetCity, routeChanged);
+        return routeChanged;
     }
 
     int bfsMode(vector<vector<int>> &forwardList, vector<vector<int>> &backwardList, int targetCity)
@@ -58,6 +63,27 @@ public:
         }
 
         return routeChange;
+    }
+
+    void dfsMode(vector<vector<int>> &forwardList, vector<vector<int>> &backwardList, vector<bool> &visited, int targetCity, int &routeChanged)
+    {
+        visited[targetCity] = true;
+
+        for (auto neighbour : forwardList[targetCity])
+        {
+            if (!visited[neighbour])
+            {
+                dfsMode(forwardList, backwardList, visited, neighbour, ++routeChanged);
+            }
+        }
+
+        for (auto neighbour : backwardList[targetCity])
+        {
+            if (!visited[neighbour])
+            {
+                dfsMode(forwardList, backwardList, visited, neighbour, routeChanged);
+            }
+        }
     }
 };
 
